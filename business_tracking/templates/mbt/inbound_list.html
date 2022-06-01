@@ -1,37 +1,32 @@
-<div>
-    <ul>
-    {% for inbound in inbound_list %}
-        <li><a href="{% url 'mbt:inbound_detail' inbound.id %}">{{ inbound.inbound_title }}</a></li>
-    {% endfor %}
-    </ul>
-</div>
-</br>
-<div>
-    <button id="show">신규 건 추가</button>
-    <div class="background">
-        <div class="window">
-            <div class="popup">
-                <div>
-                    <form action="{% url 'mbt:create_inbound' %}" method="post">
-                        {% csrf_token %}
-                        <label>인바운드 문의건</label><input type="text" name="inbound_title" required><br/>
-                        <label>클라이언트 명</label><input type="text" name="client_name" required><br/>
-                        <label>클라이언트 접촉경로</label><input type="text" name="client_contact_point" required><br/>
-                        <label>부서</label>
-                        <select name="dept">
-                            <option value="CAM">캠페인본부</option>
-                            <option value="NWB">BX사업본부</option>
-                            <option value="CNS">전략컨설팅본부</option>
-                            <option value="SLT">더쏠트</option>
-                            <option value="LCO">로코옵티마이저스</option>
-                        </select>
-                        <input type="submit" value="인바운드건 생성">
-                    </form>
-                </div>
-                <div>
-                    <button id="close">팝업닫기</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{% extends 'base.html' %} 
+{% block content %}
+<div class="container my-3">
+    <table class="table">
+        <thead>
+            <tr class="table-dark">
+                <th>번호</th>
+                <th>인바운드 문의 건</th>
+                <th>광고주 명</th>
+                <th>컨택 경로</th>
+                <th>문의 부서</th>
+                <th>문의 날짜</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for inbound in inbound_list %}
+        <tr>
+            <td>{{ inbound.id }}</td>
+            <td>
+                <a href="{%url 'mbt:inbound_detail' inbound.id %}">{{ inbound.inbound_title }}</a>
+            </td>
+            <td>{{ inbound.client_name }}</td>
+            <td>{{ inbound.client_contact_point }}</td>
+            <td>{{ inbound.dept }}</td>
+            <td>{{ inbound.created_at }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'mbt:create_inbound' %}" class="btn btn-primary">인바운드 건 생성하기</a>
+</div> 
+{% endblock %} 
