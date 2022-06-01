@@ -1,0 +1,32 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="container my-3">
+    <table class="table">
+        <thead>
+            <tr class="table-dark">
+                <th>번호</th>
+                <th>인바운드 문의 건</th>
+                <th>광고주 명</th>
+                <th>컨택 경로</th>
+                <th>문의 부서</th>
+                <th>문의 날짜</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for inbound in inbound_list %}
+        <tr>
+            <td>{{ inbound.id }}</td>
+            <td>
+                <a href="{%url 'mbt:inbound_detail' inbound.id %}">{{ inbound.inbound_title }}</a>
+            </td>
+            <td>{{ inbound.client_name }}</td>
+            <td>{{ inbound.client_contact_point }}</td>
+            <td>{{ inbound.dept }}</td>
+            <td>{{ inbound.created_at }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'mbt:create_inbound' %}" class="btn btn-primary">인바운드 건 생성하기</a>
+</div> 
+{% endblock %} 
