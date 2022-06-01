@@ -15,7 +15,7 @@
         <tbody>
         {% for inbound in inbound_list %}
         <tr>
-            <td>{{ forloop.counter }}</td>
+            <td>{{ inbound.id }}</td>
             <td>
                 <a href="{%url 'mbt:inbound_detail' inbound.id %}">{{ inbound.inbound_title }}</a>
             </td>
@@ -27,5 +27,6 @@
         {% endfor %}
         </tbody>
     </table>
+    <a href="{% url 'mbt:create_inbound' %}" class="btn btn-primary">인바운드 건 생성하기</a>
 </div> 
 {% endblock %} 
