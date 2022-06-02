@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block content %}
 <div class="container my-3">
     <table class="table">
@@ -13,20 +13,26 @@
             </tr>
         </thead>
         <tbody>
-        {% for inbound in inbound_list %}
-        <tr>
-            <td>{{ inbound.id }}</td>
-            <td>
-                <a href="{%url 'mbt:inbound_detail' inbound.id %}">{{ inbound.inbound_title }}</a>
-            </td>
-            <td>{{ inbound.client_name }}</td>
-            <td>{{ inbound.client_contact_point }}</td>
-            <td>{{ inbound.dept }}</td>
-            <td>{{ inbound.created_at }}</td>
-        </tr>
-        {% endfor %}
+            {% if inbound_list %}
+            {% for inbound in inbound_list %}
+            <tr>
+                <td>{{ inbound.id }}</td>
+                <td>
+                    <a href="{%url 'mbt:inbound_detail' inbound.id %}">{{ inbound.inbound_title }}</a>
+                </td>
+                <td>{{ inbound.client_name }}</td>
+                <td>{{ inbound.client_contact_point }}</td>
+                <td>{{ inbound.dept }}</td>
+                <td>{{ inbound.created_at }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <p>등록된 건이 없습니다.</p>
+            </tr>
+            {% endif %}
         </tbody>
     </table>
     <a href="{% url 'mbt:create_inbound' %}" class="btn btn-primary">인바운드 건 생성하기</a>
-</div> 
-{% endblock %} 
+</div>
+{% endblock %}
