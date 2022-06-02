@@ -1,12 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.core.paginator import Paginator
 from .models import Inbound
 from .forms import InboundForm
 
 
 def inbound(request):
+    page = request.GET.get("page", "1")
     inbound_lst = Inbound.objects.order_by("-created_at")
-    context = {'inbound_list':inbound_lst}
+    paginator = Paginator(inbound_lst, 10) # 10 records per pages
+    page_obj = paginator.get_page(page)
+    context = {'inbound_list':page_obj}
     return render(request, 'mbt/inbound_list.html', context)
 
 def inbound_detail(request, inbound_id):
