@@ -25,7 +25,7 @@ class Inbound(models.Model):
 
 class Contract(models.Model):
     id = models.AutoField(primary_key=True)
-    inbound_id = models.ForeignKey(Inbound, on_delete=models.RESTRICT)
+    inbound = models.ForeignKey(Inbound, on_delete=models.RESTRICT)
     created_at = models.DateTimeField()
     assignee = models.CharField(max_length=10)
     contracted_value = models.IntegerField()

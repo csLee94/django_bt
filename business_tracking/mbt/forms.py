@@ -1,5 +1,5 @@
 from django import forms
-from mbt.models import Inbound
+from mbt.models import Inbound, Contract
 
 class InboundForm(forms.ModelForm):
     class Meta:
@@ -16,4 +16,14 @@ class InboundForm(forms.ModelForm):
             "client_name":"광고주 명",
             "client_contact_point":"접촉경로",
             "dept":"문의 대응 부서",
+        }
+
+class InboundToContractForm(forms.ModelForm):
+    class Meta:
+        model=Contract
+        fields = ['assignee', 'contracted_value', 'memo']
+        labels = {
+            'assignee':'담당자',
+            'contracted_value':'수주계약 총 금액',
+            'memo':"메모"
         }

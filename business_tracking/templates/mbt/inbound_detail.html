@@ -1,6 +1,44 @@
+{% extends 'base.html' %} 
+{% block content %}
 <h1>{{ inbound.inbound_title }}</h1>
 <div>
     {{ inbound.client_name }}<br/>
     {{ inbound.client_contact_point }}<br/>
     {{ inbound.dept }}<br/>
 </div>
+<div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">신규 계약 등록</button>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">수주계약 내용</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'mbt:inbound_to_contract' inbound.id %}" method="post" class="my-3">
+            {% csrf_token %}
+          <div class="mb-3">
+            <label for="assignee" class="col-form-label">담당자:</label>
+            <input type="text" class="form-control" id="assignee" name="assignee">
+          </div>
+          <div class="mb-3">
+            <label for="contracted_value" class="col-form-label">수주계약 총액:</label>
+            <input type="number" class="form-control" id="contracted_value" name="contracted_value">
+          </div>
+          <div class="mb-3">
+            <label for="memo" class="col-form-label">메모:</label>
+            <textarea class="form-control" id="memo" name="memo"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">계약 건 등록</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}
