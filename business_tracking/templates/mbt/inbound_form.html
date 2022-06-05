@@ -4,7 +4,46 @@
     <h5 class="my-3 border-bottom pb-2"> 인바운드 건 등록</h5>
     <form method="post">
         {% csrf_token %} 
-        {{ form.as_p}}
+        <div class="mb-3">
+            <label for="client_name" class="col-form-label">광고주 명:</label>
+            <input type="text" class="form-control" name="client_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="budget" class="col-form-label">예산:</label>
+            <input type="number" class="form-control" id="money" name="budget">
+        </div>
+        <div class="mb-3">
+            <label for="requested_summary" class="col-form-label">요청 브리프:</label>
+            <input type="text" class="form-control" name="requested_summary" required>
+        </div>
+        <div class="mb-3">
+            <label for="inbound_path" class="col-form-label">인바운드 경로:</label>
+            <input type="text" class="form-control" name="inbound_path" required>
+        </div>
+        <div class="mb-3">
+            <label for="inbound_dept" class="col-form-label">문의 대응 부서:</label>
+            <select class="form-select" name="inbound_dept" required>
+                <option value="" selected="">---------</option>
+                <option value="CAM">캠페인본부</option>
+                <option value="NWB">BX사업본부</option>
+                <option value="CNS">전략컨설팅본부</option>
+                <option value="SLT">더쏠트</option>
+                <option value="LCO">로코옵티마이저스</option>
+              </select>
+        </div>
+        <div class="row">
+            <label class="col-form-label">고객사 담당자 정보</label>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="고객사 담당자" aria-label="client_manager" name="client_manager">
+            </div>
+            <div class="col">
+              <input type="email" class="form-control" placeholder="담당자 이메일" aria-label="client_manager_email" name="client_manager_email">
+            </div>
+            <div class="col">
+                <input type="tel" class="form-control" placeholder="담당자 연락처" aria-label="client_manager_tel" name="client_manager_tel">
+            </div>
+        </div>
+    </br>
         <button type="submit" class="btn btn-primary">저장하기</button>
     </form>
 </div>
