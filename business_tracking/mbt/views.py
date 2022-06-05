@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.http import HttpResponseNotAllowed
 from .models import Inbound
-from .forms import InboundForm
-
+from .forms import InboundForm, InboundToContractForm
 
 def inbound(request):
     page = request.GET.get("page", "1")
@@ -32,6 +32,22 @@ def create_inbound(request):
     return render(request, 'mbt/inbound_form.html', context)
     # form = InboundForm()
     # return render(request, 'mbt/inbound_form.html', {'form':form})
+
+def inbound_to_contract(request, inbound_id):
+    inbound = get_object_or_404(Inbound, pk=inbound_id)
+    if request.method == "POST":
+        form = InboundToContractForm(request.POST)
+        if form.is_valid():
+            contract = form.save(commit=False)
+            contract.created_at= timezone.now()
+            contract.status = "수주계약"
+            contract.inbound = inbound
+            contract.save()
+            return redirect("mbt:inbound_detail", inbound_id=inbound.id)
+    else:
+        return HttpResponseNotAllowed("Only POST is possible")
+    context = {'inbound':inbound, 'form':form}
+    return render(request, "mbt/inbound_detail.html", context)
 
 # def create_inbound(request):
 #     inbound = Inbound(
