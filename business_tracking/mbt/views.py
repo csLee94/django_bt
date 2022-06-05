@@ -24,6 +24,8 @@ def create_inbound(request):
         if form.is_valid():
             inbound_record = form.save(commit=False)
             inbound_record.created_at = timezone.now()
+            inbound_record.inbound_title = "%s_%s 문의" % (form.cleaned_data.get("client_name"), form.cleaned_data.get("requested_summary"))
+            inbound_record.status = "인바운드"
             inbound_record.save()
             return redirect('mbt:inbound')
     else:
@@ -34,28 +36,17 @@ def create_inbound(request):
     # return render(request, 'mbt/inbound_form.html', {'form':form})
 
 def inbound_to_contract(request, inbound_id):
-    inbound = get_object_or_404(Inbound, pk=inbound_id)
+    # inbound = get_object_or_404(Inbound, pk=inbound_id)
     if request.method == "POST":
         form = InboundToContractForm(request.POST)
         if form.is_valid():
             contract = form.save(commit=False)
             contract.created_at= timezone.now()
             contract.status = "수주계약"
-            contract.inbound = inbound
+            contract.inbound_id = inbound_id
             contract.save()
-            return redirect("mbt:inbound_detail", inbound_id=inbound.id)
+            return redirect("mbt:inbound_detail", inbound_id=inbound_id)
     else:
         return HttpResponseNotAllowed("Only POST is possible")
     context = {'inbound':inbound, 'form':form}
     return render(request, "mbt/inbound_detail.html", context)
-
-# def create_inbound(request):
-#     inbound = Inbound(
-#         created_at=timezone.now(),
-#         inbound_title=request.POST.get('inbound_title'),
-#         client_name=request.POST.get("client_name"),
-#         client_contact_point=request.POST.get("client_contact_point"),
-#         dept=request.POST.get("dept")
-#     )
-#     inbound.save()
-#     return redirect('mbt:inbound')

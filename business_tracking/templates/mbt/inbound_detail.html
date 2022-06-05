@@ -19,8 +19,8 @@
         <form action="{% url 'mbt:inbound_to_contract' inbound.id %}" method="post" class="my-3">
             {% csrf_token %}
           <div class="mb-3">
-            <label for="assignee" class="col-form-label">담당자:</label>
-            <input type="text" class="form-control" id="assignee" name="assignee">
+            <label for="person" class="col-form-label">담당자:</label>
+            <input type="text" class="form-control" id="person" name="person">
           </div>
           <div class="mb-3">
             <label for="contracted_value" class="col-form-label">수주계약 총액:</label>
