@@ -3,7 +3,6 @@ from django.db import models
 # Create your models here.
 
 class Inbound(models.Model):
-    id = models.AutoField(primary_key=True)
     created_at = models.DateTimeField()
     inbound_dept = models.CharField(
         max_length=10,
@@ -36,13 +35,14 @@ class InboundHistory(models.Model):
             ("ACT2","담당부서 이관"),
             ("ACT3","미팅확정"),
             ("ACT4","미팅완료"),
+            ("ACT5", "기타"),
         ]
     )
     description = models.TextField()
     person = models.CharField(max_length=5)
+    action_created_at = models.DateTimeField()
 
 class Contract(models.Model):
-    id = models.AutoField(primary_key=True)
     inbound_id = models.IntegerField()
     contracted_at = models.DateTimeField()
     contracted_value = models.IntegerField()
