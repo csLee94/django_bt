@@ -1,6 +1,175 @@
-<h1>{{ inbound.inbound_title }}</h1>
-<div>
-    {{ inbound.client_name }}<br/>
-    {{ inbound.client_contact_point }}<br/>
-    {{ inbound.dept }}<br/>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-sm">
+  </br>
+  <div>
+    <div class="row align-items-end">
+        <h1>{{ inbound.inbound_title }}</h1>
+    </div>
+    </br>
+    <!-- 인바운드 내역 -->
+    <div class="container">
+      <div class="row align-items-end">
+        <div class="col-sm-4">
+          <!-- 신규 계약 건 추가 modal -->
+          <div class="float-start">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              data-bs-whatever="@mdo">신규 계약 등록</button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">수주계약 내용</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{% url 'mbt:add_inbound_action' inbound.id %}" method="post" class="my-3">
+                      {% csrf_token %}
+                      <div class="mb-3">
+                        <label for="person" class="col-form-label">담당자:</label>
+                        <input type="text" class="form-control" id="person" name="person">
+                      </div>
+                      <div class="mb-3">
+                        <label for="contracted_value" class="col-form-label">수주계약 총액:</label>
+                        <input type="number" class="form-control" id="contracted_value" name="contracted_value">
+                      </div>
+                      <div class="mb-3">
+                        <label for="memo" class="col-form-label">메모:</label>
+                        <textarea class="form-control" id="memo" name="memo"></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-primary">계약 건 등록</button>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <form method="post" action="{% url 'mbt:add_inbound_action' inbound.id %}" class="float-end">
+            {% csrf_token %} 
+            <div class="row align-items-end">
+              <div class="col-md-auto">
+                <label for="action_type" class="col-form-label">문의 대응(선택)</label>
+                <select class="form-select" name="action_type" required>
+                  <option value="" selected="">---------</option>
+                  <option value="ACT1">응대회신</option>
+                  <option value="ACT2">담당부서 이관</option>
+                  <option value="ACT3">미팅확정</option>
+                  <option value="ACT4">미팅완료</option>
+                  <option value="ACT5">기타</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="description" class="col-form-label">비고</label>
+                <input type="text" class="form-control" name="description" required>
+              </div>
+              <div class="col-3">
+                <label for="person" class="col-form-label">담당자</label>
+                <input type="text" class="form-control" name="person" required>
+              </div>
+              <div class="col-2">
+                <button type="submit" class="btn btn-success">추가</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </br>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="list_group">
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">인바운드 생성일</div>
+                {{ inbound.created_at }}
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">인바운드 대응 부서</div>
+                {{ inbound.get_inbound_dept_display }}
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">인바운드 경로</div>
+                {{ inbound.inbound_path }}
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">문의 요약</div>
+                {{ inbound.requested_summary }}
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">예산</div>
+                {{ inbound.budget }}
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">문의 고객사</div>
+                {{ inbound.client_name }}
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">고객사 담당자</div>
+                {{ inbound.client_manager }}
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">담당자 이메일</div>
+                {{ inbound.client_manager_email }}
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">담당자 번호</div>
+                {{ inbound.client_manager_tel }}
+              </div>
+            </li>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <div style="overflow:auto; height: 590px;">
+            <div class="container text-primary">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr class="table-dark">
+                    <th>일자</th>
+                    <th>대응</th>
+                    <th>비고</th>
+                    <th>담당자</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if inbound_history %}
+                  {% for history in inbound_history %} 
+                  <tr class="table-secondary">
+                    <td>{{ history.action_created_at }}</td>
+                    <td>{{ history.get_action_type_display}}</td>
+                    <td>{{ history.description }}</td>
+                    <td>{{ history.person }}</td>
+                  </tr>
+                  {% endfor %} 
+                  {% endif %} 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </br>
+  </div>
 </div>
+{% endblock %}

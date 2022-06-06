@@ -4,12 +4,13 @@
     <table class="table">
         <thead>
             <tr class="table-dark">
-                <th>번호</th>
+                <th>ID</th>
                 <th>인바운드 문의 건</th>
-                <th>광고주 명</th>
+                <th>예산</th>
                 <th>컨택 경로</th>
                 <th>문의 부서</th>
                 <th>문의 날짜</th>
+                <th>상태</th>
             </tr>
         </thead>
         <tbody>
@@ -20,10 +21,11 @@
                 <td>
                     <a href="{%url 'mbt:inbound_detail' inbound.id %}">{{ inbound.inbound_title }}</a>
                 </td>
-                <td>{{ inbound.client_name }}</td>
-                <td>{{ inbound.client_contact_point }}</td>
-                <td>{{ inbound.dept }}</td>
+                <td>{{ inbound.budget }}</td>
+                <td>{{ inbound.inbound_path }}</td>
+                <td>{{ inbound.get_inbound_dept_display }}</td>
                 <td>{{ inbound.created_at }}</td>
+                <td>{{ inbound.status }}</td>
             </tr>
             {% endfor %}
             {% else %}
