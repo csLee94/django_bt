@@ -16,7 +16,6 @@ def inbound(request):
 def inbound_detail(request, inbound_id):
     inbound = Inbound.objects.get(id=inbound_id)
     inbound_history = InboundHistory.objects.filter(inbound_id=inbound_id).order_by("-action_created_at")
-    print("yes")
     context = {'inbound':inbound, "inbound_history":inbound_history}
     print(context)
     return render(request, 'mbt/inbound_detail.html', context)
