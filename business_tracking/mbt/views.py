@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.http import HttpResponseNotAllowed
-from .models import Inbound
-from .forms import InboundForm, InboundToContractForm
+from .models import Inbound, InboundHistory
+from .forms import InboundForm, InboundToContractForm, AddInboundHistory
 
 def inbound(request):
     page = request.GET.get("page", "1")
@@ -15,7 +15,10 @@ def inbound(request):
 
 def inbound_detail(request, inbound_id):
     inbound = Inbound.objects.get(id=inbound_id)
-    context = {'inbound':inbound}
+    inbound_history = InboundHistory.objects.filter(inbound_id=inbound_id).order_by("-action_created_at")
+    print("yes")
+    context = {'inbound':inbound, "inbound_history":inbound_history}
+    print(context)
     return render(request, 'mbt/inbound_detail.html', context)
 
 def create_inbound(request):
@@ -45,6 +48,21 @@ def inbound_to_contract(request, inbound_id):
             contract.status = "수주계약"
             contract.inbound_id = inbound_id
             contract.save()
+            return redirect("mbt:inbound_detail", inbound_id=inbound_id)
+    else:
+        return HttpResponseNotAllowed("Only POST is possible")
+    context = {'inbound':inbound, 'form':form}
+    return render(request, "mbt/inbound_detail.html", context)
+
+def add_inbound_history(request, inbound_id):
+    inbound = get_object_or_404(Inbound, pk=inbound_id)
+    if request.method == "POST":
+        form = AddInboundHistory(request.POST)
+        if form.is_valid():
+            inbound_act = form.save(commit=False)
+            inbound_act.action_created_at= timezone.now()
+            inbound_act.inbound_id = inbound_id
+            inbound_act.save()
             return redirect("mbt:inbound_detail", inbound_id=inbound_id)
     else:
         return HttpResponseNotAllowed("Only POST is possible")

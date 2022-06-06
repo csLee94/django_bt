@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-sm">
+  </br>
+  <div>
+    <div class="row align-items-end">
+      <div class="col-sm-8">
+        <h1>{{ inbound.inbound_title }}</h1>
+      </div>
+      <div class="col-sm">
+        <!-- 신규 계약 건 추가 Modal -->
+        <div class="float-end">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            data-bs-whatever="@mdo">신규 계약 등록</button>
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">수주계약 내용</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="{% url 'mbt:inbound_to_contract' inbound.id %}" method="post" class="my-3">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                      <label for="person" class="col-form-label">담당자:</label>
+                      <input type="text" class="form-control" id="person" name="person">
+                    </div>
+                    <div class="mb-3">
+                      <label for="contracted_value" class="col-form-label">수주계약 총액:</label>
+                      <input type="number" class="form-control" id="contracted_value" name="contracted_value">
+                    </div>
+                    <div class="mb-3">
+                      <label for="memo" class="col-form-label">메모:</label>
+                      <textarea class="form-control" id="memo" name="memo"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">계약 건 등록</button>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </br>
+    <!-- 인바운드 내역 -->
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-header">문의 고객사</div>
+            <div class="card-body">
+              <h5 class="card-title"> {{ inbound.client_name }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-header">문의 날짜</div>
+            <div class="card-body">
+              <h5 class="card-title">{{ inbound.created_at }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-header">문의 대응 부서</div>
+            <div class="card-body">
+              <h5 class="card-title">{{ inbound.get_inbound_dept_display }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-header">인바운드 경로</div>
+            <div class="card-body">
+              <h5 class="card-title">{{ inbound.inbound_path }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      </br>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-header">요청 브리프</div>
+            <div class="card-body">
+              <h5 class="card-title">{{ inbound.requested_summary }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card text-bg-primary">
+            <div class="card-header">예산</div>
+            <div class="card-body">
+              <h5 class="card-title">{{ inbound.budget }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      </br>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-header">고객사 담당자</div>
+            <div class="card-body">
+              <h5 class="card-title">{{ inbound.client_manager }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-header">담당자 이메일</div>
+            <div class="card-body">
+              <h5 class="card-title">{{ inbound.client_manager_email }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-header">
+              담당자 번호
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ inbound.client_manager_tel }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </br>
+  </div>
+</div>
+{% endblock %}
