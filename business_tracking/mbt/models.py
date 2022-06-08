@@ -44,8 +44,19 @@ class InboundHistory(models.Model):
 
 class Contract(models.Model):
     inbound_id = models.IntegerField()
+    contracted_title = models.CharField(max_length=30)
     contracted_at = models.DateTimeField()
     contracted_value = models.IntegerField()
+    contracted_dept = models.CharField(
+        max_length=10,
+        choices=[
+            ("CAM", "캠페인본부"),
+            ("NWB", "BX사업본부"),
+            ("CNS", "전략컨설팅본부"),
+            ("SLT", "더쏠트"),
+            ("LCO", "로코옵티마이저스"),
+        ]
+    )
     person = models.CharField(max_length=10)
     client = models.CharField(max_length=30)
     client_type = models.CharField(
