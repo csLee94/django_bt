@@ -1,6 +1,7 @@
 # custom
 tmp*
 .vscode 
+venv_activate.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

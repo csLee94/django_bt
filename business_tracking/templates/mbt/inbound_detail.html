@@ -24,8 +24,23 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="{% url 'mbt:add_inbound_action' inbound.id %}" method="post" class="my-3">
+                    <form method="post" action="{% url 'mbt:inbound_to_contract' inbound.id %}" class="my-3">
                       {% csrf_token %}
+                      <div class="mb-3">
+                        <label for="contracted_title" class="col-form-label">계약 건 명:</label>
+                        <input type="text" class="form-control" id="contracted_title" name="contracted_title" value= "{{ inbound.inbound_title }}">
+                      </div>
+                      <div class="mb-3">
+                        <label for="contracted_dept" class="col-form-label">수주계약 부서:</label>
+                        <select class="form-select" name="contracted_dept">
+                          <option value="{{ inbound.inbound_dept }}" selected="{{ inbound.inbound_dept }}">{{ inbound.get_inbound_dept_display }}</option>
+                          <option value="CAM">캠페인본부</option>
+                          <option value="NWB">BX사업본부</option>
+                          <option value="CNS">전략컨설팅본부</option>
+                          <option value="SLT">더쏠트</option>
+                          <option value="LCO">로코옵티마이저스</option>
+                        </select>
+                      </div>
                       <div class="mb-3">
                         <label for="person" class="col-form-label">담당자:</label>
                         <input type="text" class="form-control" id="person" name="person">
@@ -35,8 +50,21 @@
                         <input type="number" class="form-control" id="contracted_value" name="contracted_value">
                       </div>
                       <div class="mb-3">
-                        <label for="memo" class="col-form-label">메모:</label>
-                        <textarea class="form-control" id="memo" name="memo"></textarea>
+                        <label for="client" class="col-form-label">광고주:</label>
+                        <input type="text" class="form-control" id="client" name="client" value="{{ inbound.client_name }}">
+                      </div>
+                      <div class="mb-3">
+                        <label for="client_type" class="col-form-label">광고주 타입:</label>
+                        <select class="form-select" name="client_type">
+                          <option value="" selected="">---------</option>
+                          <option value="ADV">광고주</option>
+                          <option value="AGN">대행사</option>
+                          <option value="LAB">랩사</option>
+                        </select>
+                      </div>                                            
+                      <div class="mb-3">
+                        <label for="description" class="col-form-label">메모:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
                       </div>
                       <button type="submit" class="btn btn-primary">계약 건 등록</button>
                     </form>
