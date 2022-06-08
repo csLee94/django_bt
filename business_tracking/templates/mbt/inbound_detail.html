@@ -24,8 +24,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="{% url 'mbt:add_inbound_action' inbound.id %}" method="post" class="my-3">
+                    <form method="post" action="{% url 'mbt:inbound_to_contract' inbound.id %}" class="my-3">
                       {% csrf_token %}
+                      <div class="mb-3">
+                        <label for="contracted_title" class="col-form-label">계약 건 명:</label>
+                        <input type="text" class="form-control" id="contracted_title" name="contracted_title" value= "{{ inbound.inbound_title }}">
+                      </div>
                       <div class="mb-3">
                         <label for="person" class="col-form-label">담당자:</label>
                         <input type="text" class="form-control" id="person" name="person">
@@ -35,8 +39,8 @@
                         <input type="number" class="form-control" id="contracted_value" name="contracted_value">
                       </div>
                       <div class="mb-3">
-                        <label for="memo" class="col-form-label">메모:</label>
-                        <textarea class="form-control" id="memo" name="memo"></textarea>
+                        <label for="description" class="col-form-label">메모:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
                       </div>
                       <button type="submit" class="btn btn-primary">계약 건 등록</button>
                     </form>
