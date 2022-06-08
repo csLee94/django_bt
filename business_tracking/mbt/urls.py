@@ -11,4 +11,5 @@ urlpatterns = [
     path('inbound/addact/<int:inbound_id>', views.add_inbound_history, name="add_inbound_action"),
     path('inbound/create/', views.create_inbound, name='create_inbound'),
     path('contract/', views.contract, name='contract'),
+    path('contract/<int:contract_id>/', views.contract_detail, name='contract_detail'),
 ]

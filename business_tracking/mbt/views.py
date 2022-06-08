@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.http import HttpResponseNotAllowed
 from .models import Inbound, InboundHistory, Contract
-from .forms import InboundForm, InboundToContractForm, AddInboundHistory
+from .forms import InboundForm, InboundToContractForm, AddInboundHistory, Contract
 
 def inbound(request):
     page = request.GET.get("page", "1")
@@ -17,7 +17,6 @@ def inbound_detail(request, inbound_id):
     inbound = Inbound.objects.get(id=inbound_id)
     inbound_history = InboundHistory.objects.filter(inbound_id=inbound_id).order_by("-action_created_at")
     context = {'inbound':inbound, "inbound_history":inbound_history}
-    print(context)
     return render(request, 'mbt/inbound_detail.html', context)
 
 def create_inbound(request):
@@ -62,7 +61,7 @@ def inbound_to_contract(request, inbound_id):
             contract.status = "수주계약"
             contract.inbound_id = inbound_id
             contract.save()
-            return redirect("mbt:inbound_detail", inbound_id=inbound_id)
+            return redirect("mbt:contract_detail", contract_id=contract.id)
     else:
         return HttpResponseNotAllowed("Only POST is possible")
     context = {'inbound':inbound, 'form':form}
@@ -75,3 +74,8 @@ def contract(request):
     page_obj = paginator.get_page(page)
     context = {'contract_list':page_obj}
     return render(request, 'mbt/contract_list.html', context)
+
+def contract_detail(request, contract_id):
+    contract = Contract.objects.get(id=contract_id)
+    context = {'contract':contract}
+    return render(request, 'mbt/contract_detail.html', context)

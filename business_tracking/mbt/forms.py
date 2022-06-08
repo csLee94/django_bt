@@ -28,13 +28,14 @@ class InboundForm(forms.ModelForm):
 class InboundToContractForm(forms.ModelForm):
     class Meta:
         model=Contract
-        fields = ['contracted_title','person', 'contracted_value', 'description']
-        labels = {
-            'contracted_title':'계약 건 명',
-            'person':'담당자',
-            'contracted_value':'수주계약 총 금액',
-            'description':"메모"
-        }
+        fields = ['contracted_title', 'contracted_dept', 'person', 'contracted_value', 'client', 'client_type', 'description']
+        # labels = {
+        #     'contracted_title':'계약 건 명',
+
+        #     'person':'담당자',
+        #     'contracted_value':'수주계약 총 금액',
+        #     'description':"메모"
+        # }
 
 class AddInboundHistory(forms.ModelForm):
     class Meta:

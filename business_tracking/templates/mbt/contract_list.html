@@ -19,8 +19,7 @@
             <tr>
                 <td>{{ contract.id }}</td>
                 <td>
-                    <!-- <a href="">{{ contract.contract_title }}</a> -->
-                    {{ contract.contracted_title }}
+                    <a href="{% url 'mbt:contract_detail' contract.id %}">{{ contract.contracted_title }}</a>
                 </td>
                 <td>{{ contract.contracted_at }}</td>
                 <td>{{ contract.contracted_value }}</td>
