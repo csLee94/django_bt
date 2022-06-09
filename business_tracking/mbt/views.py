@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.http import HttpResponseNotAllowed
 from .models import Inbound, InboundHistory, Contract
-from .forms import InboundForm, InboundToContractForm, AddInboundHistory, Contract
+from .forms import InboundForm, InboundToContractForm, AddInboundHistory, Contract, ContractForm
 
 def inbound(request):
     page = request.GET.get("page", "1")
@@ -58,7 +58,7 @@ def inbound_to_contract(request, inbound_id):
         if form.is_valid():
             contract = form.save(commit=False)
             contract.contracted_at= timezone.now()
-            contract.status = "수주계약"
+            contract.status = "progress"
             contract.inbound_id = inbound_id
             contract.save()
             return redirect("mbt:contract_detail", contract_id=contract.id)
@@ -79,3 +79,18 @@ def contract_detail(request, contract_id):
     contract = Contract.objects.get(id=contract_id)
     context = {'contract':contract}
     return render(request, 'mbt/contract_detail.html', context)
+
+def create_contract(request):
+    if request.method == 'POST':
+        form = ContractForm(request.POST)
+        if form.is_valid():
+            contract_record = form.save(commit=False)
+            contract_record.contracted_at = timezone.now()
+            contract_record.status = "진행중"
+            contract_record.inbound_id = None
+            contract_record.save()
+            return redirect('mbt:contract')
+    else:
+        form = ContractForm()
+    context = {'form': form}
+    return render(request, 'mbt/contract_form.html', context)
