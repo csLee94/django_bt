@@ -38,12 +38,12 @@ class InboundHistory(models.Model):
             ("ACT5", "기타"),
         ]
     )
-    description = models.TextField()
+    description = models.TextField(null=True)
     person = models.CharField(max_length=5)
     action_created_at = models.DateTimeField()
 
 class Contract(models.Model):
-    inbound_id = models.IntegerField()
+    inbound_id = models.IntegerField(null=True)
     contracted_title = models.CharField(max_length=30)
     contracted_at = models.DateTimeField()
     contracted_value = models.IntegerField()
@@ -67,7 +67,10 @@ class Contract(models.Model):
             ("LAB","랩사")
         ]
     )
-    description = models.TextField()
+    client_manager = models.CharField(max_length=5, null=True)
+    client_manager_email =models.EmailField(max_length=30, null=True)
+    client_manager_tel = models.CharField(max_length=13, null=True)
+    description = models.TextField(null=True)
     status = models.CharField(
         max_length=10,
         choices=[

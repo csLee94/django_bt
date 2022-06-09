@@ -12,4 +12,5 @@ urlpatterns = [
     path('inbound/create/', views.create_inbound, name='create_inbound'),
     path('contract/', views.contract, name='contract'),
     path('contract/<int:contract_id>/', views.contract_detail, name='contract_detail'),
+    path('contract/create/', views.create_contract, name='create_contract'),
 ]

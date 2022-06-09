@@ -46,3 +46,19 @@ class AddInboundHistory(forms.ModelForm):
             'description':"메모",
             'person':'담당자',
         }
+
+class ContractForm(forms.ModelForm):
+    class Meta:
+        model=Contract
+        fields = [
+            "contracted_title",
+            "contracted_value",
+            "contracted_dept",
+            'person',
+            'client',
+            'client_type',
+            'client_manager',
+            'client_manager_email',
+            'client_manager_tel',
+            'description',
+        ]
