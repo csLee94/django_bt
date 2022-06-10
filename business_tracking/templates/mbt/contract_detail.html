@@ -12,7 +12,122 @@
             </button>
         </div>
         <div class="col">
-            <h1>hi</h1>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ProductModal">
+                상품 등록
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="ProductModal" tabindex="-1" aria-labelledby="ProductModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ProductModalLabel">상품내역 추가</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{% url 'mbt:add_product' contract.id %}" class="my-3">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col">
+                                <label for="product" class="col-form-label">상품:</label>
+                                <input type="text" class="form-control" id="product" name="product" value= "">
+                            </div>
+                            <div class="col">
+                                <label for="value_amount" class="col-form-label">가격(VAT 제외):</label>
+                                <input type="number" class="form-control" id="value_amount" name="value_amount" value= "">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="person" class="col-form-label">담당자:</label>
+                            <input type="text" class="form-control" id="person" name="person" value= "{{ contract.person }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">비고:</label>
+                            <input type="textarea" class="form-control" id="description" name="description" value= "">
+                        </div>
+                        <button type="submit" class="btn btn-primary">저장</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="col">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#BillRevModal">
+                세금계산서 발행 요청
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="BillRevModal" tabindex="-1" aria-labelledby="BillRevModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="BillRevModalLabel">세금계산서 발행 요청</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="{% url 'mbt:add_billing_revenue' contract.id %}" class="my-3">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="billinged_person" class="col-form-label">담당자:</label>
+                                <input type="text" class="form-control" id="billinged_person" name="billinged_person" value= "{{ contract.person }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="title" class="col-form-label">품목:</label>
+                                <input type="text" class="form-control" id="title" name="title" value= "{{ contract.contracted_title }}">
+                            </div>
+                            <div class="row">
+                                <div class="col">                                    
+                                    <div class="mb-3">
+                                        <label for="value_amount" class="col-form-label">금액:</label>
+                                        <input type="number" class="form-control" id="value_amount" name="value_amount" value= "0">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="billing_at" class="col-form-label">발행일:</label>
+                                        <input type="date" class="form-control" id="billing_at" name="billing_at" value= "">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="client" class="col-form-label">대상 법인:</label>
+                                <input type="text" class="form-control" id="client" name="client" value= "{{ contract.client }}">
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="client_manager" class="col-form-label">수신:</label>
+                                        <input type="text" class="form-control" id="client_manager" name="client_manager" value= "{{ contract.client_manager }}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="client_manager_email" class="col-form-label">메일:</label>
+                                        <input type="email" class="form-control" id="client_manager_email" name="client_manager_email" value= "{{ contract.client_manager_email }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deposit_at" class="col-form-label">입금 예정일:</label>
+                                <input type="date" class="form-control" id="deposit_at" name="deposit_at">
+                            </div>
+                            <div class="mb-3">
+                                <label for="account" class="col-form-label">주요 매체:</label>
+                                <input type="text" class="form-control" id="account" name="account" value= "">
+                            </div>
+                            <button type="submit" class="btn btn-primary">요청</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="collapse" id="collapseExample">
@@ -43,7 +158,7 @@
                         <td class="table-secondary col-md-3">수주계약 부서</td>
                         <td class="col-md-3">{{ contract.get_contracted_dept_display }}</td>
                         <td class="table-secondary col-md-3">광고주 명</td>
-                        <td class="col-md-3">{{ contract.client_name }}</td>
+                        <td class="col-md-3">{{ contract.client }}</td>
                     </tr>
                     <tr>
                         <th scope="row"></th>
@@ -58,8 +173,50 @@
         </div>
     </div>
     </br>
-    <div>
-        <h1>hi</h1>
+    <hr color="gray">
+    </br>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4><strong>프로젝트 내역</strong></h4>
+                <ol class="list-group list-group-numbered">
+                    {% if product_lst %} 
+                    {% for pro in product_lst %} 
+                    <il class="list-group-item d-flex justify-content-between align-items-start" style="">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">{{ pro.product }}</div>
+                            {{ pro.description }}
+                        </div>
+                            <span class="badge bg-primary rounded-pill">{{ pro.value_amount }}</span>
+                    </li>
+                        {% endfor %} 
+                    </ol>
+                    {% else %} 
+                    발행된 내역 없음
+                    {% endif %}
+                </ol>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col">
+                <h4><strong>세금계산서 발행 내역</strong></h4>
+                <ol class="list-group list-group-numbered">
+                    {% if billing_rev %}
+                    {% for bill in billing_rev %}
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{ bill.title}}</div>
+                            금액: {{ bill.value_amount }}
+                        </div>
+                        <span class="badge bg-primary rounded-pill">{{ bill.status }}</span>
+                    </li>
+                    {% endfor %} 
+                </ol>
+                {% else %} 
+                발행된 내역 없음
+                {% endif %}
+            </div>
+        </div>
     </div>
 
 </div>

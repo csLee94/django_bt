@@ -1,5 +1,5 @@
 from django import forms
-from mbt.models import Inbound, Contract, InboundHistory
+from mbt.models import Inbound, Contract, InboundHistory, BillingRevenue, ProductHistory
 
 class InboundForm(forms.ModelForm):
     class Meta:
@@ -60,5 +60,30 @@ class ContractForm(forms.ModelForm):
             'client_manager',
             'client_manager_email',
             'client_manager_tel',
+            'description',
+        ]
+
+class AddbillingRevenue(forms.ModelForm):
+    class Meta:
+        model=BillingRevenue
+        fields=[
+            'billinged_person',
+            'billing_at',
+            'title',
+            'value_amount',
+            'client',
+            'client_manager',
+            'client_manager_email',
+            'deposit_at',
+            'account',
+        ]
+
+class AddProduct(forms.ModelForm):
+    class Meta:
+        model=ProductHistory
+        fields=[
+            'product',
+            'value_amount',
+            'person',
             'description',
         ]

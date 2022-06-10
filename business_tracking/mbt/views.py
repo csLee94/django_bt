@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.http import HttpResponseNotAllowed
-from .models import Inbound, InboundHistory, Contract
-from .forms import InboundForm, InboundToContractForm, AddInboundHistory, Contract, ContractForm
+from .models import Inbound, InboundHistory, Contract, BillingRevenue, ProductHistory
+from .forms import AddbillingRevenue, InboundForm, InboundToContractForm, AddInboundHistory, Contract, ContractForm, AddProduct
 
 def inbound(request):
     page = request.GET.get("page", "1")
@@ -75,11 +75,6 @@ def contract(request):
     context = {'contract_list':page_obj}
     return render(request, 'mbt/contract_list.html', context)
 
-def contract_detail(request, contract_id):
-    contract = Contract.objects.get(id=contract_id)
-    context = {'contract':contract}
-    return render(request, 'mbt/contract_detail.html', context)
-
 def create_contract(request):
     if request.method == 'POST':
         form = ContractForm(request.POST)
@@ -94,3 +89,41 @@ def create_contract(request):
         form = ContractForm()
     context = {'form': form}
     return render(request, 'mbt/contract_form.html', context)
+
+def contract_detail(request, contract_id):
+    contract = Contract.objects.get(id=contract_id)
+    billing_rev = BillingRevenue.objects.filter(contract_id=contract_id)
+    product = ProductHistory.objects.filter(contract_id=contract_id)
+    context = {'contract':contract, 'billing_rev':billing_rev, 'product_lst':product}
+    return render(request, 'mbt/contract_detail.html', context)
+
+def add_product(request, contract_id):
+    contract = get_object_or_404(Contract, pk=contract_id)
+    if request.method == "POST":
+        form = AddProduct(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.contract_id = contract_id
+            product.created_at= timezone.now()
+            product.save()
+            return redirect("mbt:contract_detail", contract_id=contract_id)
+    else:
+        return HttpResponseNotAllowed("Only POST is possible")
+    context = {'contract':contract, 'form':form}
+    return render(request, "mbt/contract_detail.html", context)
+
+def add_billing_revenue(request, contract_id):
+    contract = get_object_or_404(Contract, pk=contract_id)
+    if request.method == "POST":
+        form = AddbillingRevenue(request.POST)
+        if form.is_valid():
+            billing_rev = form.save(commit=False)
+            billing_rev.contract_id = contract_id
+            billing_rev.created_at= timezone.now()
+            billing_rev.status = "requested"
+            billing_rev.save()
+            return redirect("mbt:contract_detail", contract_id=contract_id)
+    else:
+        return HttpResponseNotAllowed("Only POST is possible")
+    context = {'contract':contract, 'form':form}
+    return render(request, "mbt/contract_detail.html", context)
