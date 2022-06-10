@@ -3,7 +3,7 @@ import datetime as dt
 def handler():
     conn = sqlite3.connect("./db.sqlite3")
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM mbt_contract")
+    cursor.execute("SELECT * FROM mbt_BillingRevenue")
     rows = cursor.fetchall()
     if len(rows) <1:
         print("None")
