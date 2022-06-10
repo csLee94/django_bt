@@ -1,3 +1,4 @@
+from pydoc import describe
 from django.db import models
 
 # Create your models here.
@@ -38,12 +39,12 @@ class InboundHistory(models.Model):
             ("ACT5", "기타"),
         ]
     )
-    description = models.TextField()
+    description = models.TextField(null=True)
     person = models.CharField(max_length=5)
     action_created_at = models.DateTimeField()
 
 class Contract(models.Model):
-    inbound_id = models.IntegerField()
+    inbound_id = models.IntegerField(null=True)
     contracted_title = models.CharField(max_length=30)
     contracted_at = models.DateTimeField()
     contracted_value = models.IntegerField()
@@ -67,7 +68,10 @@ class Contract(models.Model):
             ("LAB","랩사")
         ]
     )
-    description = models.TextField()
+    client_manager = models.CharField(max_length=5, null=True)
+    client_manager_email =models.EmailField(max_length=30, null=True)
+    client_manager_tel = models.CharField(max_length=13, null=True)
+    description = models.TextField(null=True)
     status = models.CharField(
         max_length=10,
         choices=[
@@ -76,3 +80,24 @@ class Contract(models.Model):
         ],
         default="진행중"
     )
+
+class BillingRevenue(models.Model):
+    contract = models.ForeignKey(Contract, on_delete=models.CASCADE)
+    created_at = models.DateTimeField()
+    billinged_person = models.CharField(max_length=15)
+    billing_at = models.DateField()
+    title = models.CharField(max_length=50)
+    value_amount = models.IntegerField()
+    client = models.CharField(max_length=30)
+    client_manager = models.CharField(max_length=5, null=True)
+    client_manager_email = models.EmailField(max_length=30, null=True)
+    deposit_at = models.DateField() 
+    account = models.CharField(max_length=30)
+    status = models.CharField(max_length=15)
+
+class ProductHistory(models.Model):
+    contract = models.ForeignKey(Contract, on_delete=models.CASCADE)
+    product = models.CharField(max_length=30)
+    value_amount = models.IntegerField()
+    person = models.CharField(max_length=15)
+    description = models.TextField()
